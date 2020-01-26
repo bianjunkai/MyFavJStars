@@ -44,7 +44,9 @@ def load_javbus_page(javbus, target_url, web_page):
     bs = load_page(javbus, target_url)
     next_page = bs.find("a", id="next")
     items = bs.find_all("div", class_="item")
-    web_page.append(items)
+    for item in items:
+        if item.contents[1].get("class")[0] == 'movie-box':
+            web_page.append(item)
 
     if next_page is not None:
         next_url = next_page.get("href")
@@ -61,16 +63,14 @@ def movie_content_analyse(item, star):
     :param star: javbus code of one star
     :return: return a Movie element or nothing
     '''
-    if item.contents[1].get("class")[0] == 'movie-box':
-        tmp_content = item.find_all("date")
-        item_name = item.img.get('title')
-        item_img = item.img.get('src')
-        item_url = item.a.get('href')
-        item_code = tmp_content[0].string
-        item_date = tmp_content[1].string
-        return Movie(item_name, item_img, item_url, item_code, item_date, star)
-    else:
-        return
+
+    tmp_content = item.find_all("date")
+    item_name = item.img.get('title')
+    item_img = item.img.get('src')
+    item_url = item.a.get('href')
+    item_code = tmp_content[0].string
+    item_date = tmp_content[1].string
+    return Movie(item_name, item_img, item_url, item_code, item_date, star)
 
 
 def star_content_analyse(javbus, code):
@@ -166,8 +166,9 @@ def search_javlib(javlib, code):
 
         items = bs.find_all("div", class_="video")
         for item in items:
-            video_url = item.a.get("href").split("/").pop()
-            video_urls.append(video_url)
+            if item.find(class_="id").string == code:
+                video_url = item.a.get("href").split("/").pop()
+                video_urls.append(video_url)
     else:
 
         item = bs.find(id="video_title")
@@ -184,15 +185,22 @@ def get_rating(javlib, target_url):
     :param target_url:
     :return:
     '''
+    pattern = re.compile(r'[(](.*?)[)]', re.S)
     bs = load_page(javlib, target_url)
     score = bs.find("span", class_="score").string
+    if score:
+        score = re.findall(pattern, score)[0]
+    else:
+        score = "0.0"
+    print("Movie Score: " + score)
     return score
+
 
 # def get_rating_javlib(javlib,name):
 #
 #     load_page(javlib,)
 # search_javlib("http://www.n43a.com/en/","mizd-095")
-# print(search_javlib("http://www.n43a.com/en/","mide-697"))
+print(search_javlib("http://www.n43a.com/en/", "MMUS-004"))
 # get_rating("http://www.n43a.com/en/","?v=javli7di2a")
 # a = get_star_javbus_code("https://www.dmmbus.bid","初川みなみ")
 # print(a)
@@ -204,5 +212,5 @@ def get_rating(javlib, target_url):
 #     for item in web:
 
 #        movie = movie_content_analyse(item,'qs6')
- #       if movie != None:
-  ##         i += 1
+#       if movie != None:
+##         i += 1

@@ -2,13 +2,14 @@
 # encoding: utf-8
 '''
 @author: Junkai
-@license: 
+@license:
 @contact: bianjunkai@gmail.com
 @software: Jav_Scrapy
 @file: movie.py
 @time: 2020/1/25 3:30 下午
 @desc: Class of Movie
 '''
+
 
 class Movie():
 
@@ -20,8 +21,7 @@ class Movie():
     star_id = ''
     rate = 0
 
-
-    def __init__(self, name, img, url, code, date,star_id):
+    def __init__(self, name, img, url, code, date, star_id):
         self.name = name
         self.img = img
         self.url = url

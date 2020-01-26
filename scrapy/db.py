@@ -127,7 +127,7 @@ def insert_new_star(db_name, star):
         star.hometown,
         star.hobby)
     print(data)
-    sql = 'insert into STAR (id,name,en_name,img,d_o_b,height,cup,bust,waist,hip,hometown,hobby) values (?,?,?,?,?,?,?,?,?,?,?,?)'
+    sql = 'insert or replace into STAR (id,name,en_name,img,d_o_b,height,cup,bust,waist,hip,hometown,hobby) values (?,?,?,?,?,?,?,?,?,?,?,?)'
     cursor.execute(sql, data)
     connection.commit()
     connection.close()
@@ -152,7 +152,7 @@ def inert_new_movie(db_name, movie):
         movie.star_id,
         '0',
         movie.rate)
-    sql = 'insert into MOVIE (name,img,url,code,date,star_id,status,rate) values (?,?,?,?,?,?,?,?)'
+    sql = 'insert or replace into MOVIE (name,img,url,code,date,star_id,status,rate) values (?,?,?,?,?,?,?,?)'
     cursor.execute(sql, data)
     connection.commit()
     connection.close()
