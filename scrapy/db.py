@@ -77,13 +77,16 @@ def load_movies_of_star(db_name, star_id):
     '''
     connection = sqlite3.connect(db_name)
     cursor = connection.cursor()
-    sql = 'SELECT rowid,code from MOVIE where star_id =?'
+    sql = 'SELECT code from MOVIE where star_id =?'
     cursor.execute(sql, (star_id,))
     values = cursor.fetchall()
+    movies = []
+    for value in values:
+        movies.append(value[0])
     cursor.close()
     connection.commit()
     connection.close()
-    return values
+    return movies
 
 
 def load_movie_info(db_name, movie_rowid):

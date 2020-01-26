@@ -32,7 +32,23 @@ def load_page(mainURL, target_url):
     return bs
 
 
-def load_javbus_page(javbus, target_url, web_page):
+def load_new_javbus_page(javbus, target_url, web_page, movie_exists):
+    bs = load_page(javbus, target_url)
+    items = bs.find_all("div", class_="item")
+    for item in items:
+
+        if item.contents[1].get("class")[0] == 'movie-box':
+            print(item.find_all("date")[0].string)
+            if item.find_all("date")[0].string in movie_exists:
+                continue
+            else:
+                print("ADD NEW MOVIE")
+                web_page.append(item)
+
+    return
+
+
+def load_all_javbus_page(javbus, target_url, web_page):
     '''
     Load one star's javbus page and recurrent for all the pages
     :param javbus: javbus web url
@@ -51,7 +67,7 @@ def load_javbus_page(javbus, target_url, web_page):
     if next_page is not None:
         next_url = next_page.get("href")
         print(next_url)
-        load_javbus_page(javbus, next_url, web_page)
+        load_all_javbus_page(javbus, next_url, web_page)
 
     return
 
@@ -187,20 +203,40 @@ def get_rating(javlib, target_url):
     '''
     pattern = re.compile(r'[(](.*?)[)]', re.S)
     bs = load_page(javlib, target_url)
-    score = bs.find("span", class_="score").string
-    if score:
-        score = re.findall(pattern, score)[0]
+    score_html = bs.find("span", class_="score")
+    if score_html:
+        score = re.findall(pattern, score_html.string)[0]
     else:
         score = "0.0"
     print("Movie Score: " + score)
     return score
 
 
+def generate_movies_from_webblob(tmp_web, javbus_code, javlib_url):
+    for web in tmp_web:
+        rates = []
+        movie = movie_content_analyse(web, javbus_code)
+        print(movie.code)
+        search_results = search_javlib(javlib_url, movie.code)
+        if search_results:
+            for search in search_results:
+                print("Search Results: " + search)
+                score = get_rating(javlib_url, search)
+                print(score)
+                rates.append(float(score))
+        else:
+            print("Not Found")
+            rates.append(0.0)
+        print(rates)
+        movie.rate = max(rates)
+        print(movie.rate)
+    return movie
+
 # def get_rating_javlib(javlib,name):
 #
 #     load_page(javlib,)
 # search_javlib("http://www.n43a.com/en/","mizd-095")
-print(search_javlib("http://www.n43a.com/en/", "MMUS-004"))
+# print(search_javlib("http://www.n43a.com/en/", "MMUS-004"))
 # get_rating("http://www.n43a.com/en/","?v=javli7di2a")
 # a = get_star_javbus_code("https://www.dmmbus.bid","初川みなみ")
 # print(a)
