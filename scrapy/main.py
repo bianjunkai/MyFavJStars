@@ -109,6 +109,6 @@ def scan_all_data(db_name, javbus_url, javlib_url):
     return
 
 
-# create_new_db(DB_NAME,JAVBUS_URL,["相沢みなみ","天使もえ","桃乃木かな"])
+create_new_db(DB_NAME,JAVBUS_URL,["相沢みなみ","天使もえ","桃乃木かな"])
 scan_newest_data(DB_NAME, JAVBUS_URL, JAVLIB_URL)
 # scrapy.load_javbus_page('https://www.dmmbus.bid',"/star/93l/15",[])

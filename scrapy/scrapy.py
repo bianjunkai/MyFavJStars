@@ -204,9 +204,8 @@ def get_rating(javlib, target_url):
     pattern = re.compile(r'[(](.*?)[)]', re.S)
     bs = load_page(javlib, target_url)
     score_html = bs.find("span", class_="score")
-    if score_html :
-        if re.findall(pattern, score_html.string) :
-            score = re.findall(pattern, score_html.string)[0]
+    if score_html and score_html.string:
+        score = re.findall(pattern, score_html.string)[0]
     else:
         score = "0.0"
     print("Movie Score: " + score)
