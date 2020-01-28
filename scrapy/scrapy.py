@@ -25,7 +25,7 @@ def load_page(mainURL, target_url):
     :return: beautifulsoup4 content
     '''
     url = mainURL + target_url
-    r = requests.get(url)
+    r = requests.get(url,timeout = 5)
     if r.status_code == 200:
         bs = BeautifulSoup(r.content, "html.parser")
         print(r.url + " load OK")
@@ -204,8 +204,9 @@ def get_rating(javlib, target_url):
     pattern = re.compile(r'[(](.*?)[)]', re.S)
     bs = load_page(javlib, target_url)
     score_html = bs.find("span", class_="score")
-    if score_html:
-        score = re.findall(pattern, score_html.string)[0]
+    if score_html :
+        if re.findall(pattern, score_html.string) :
+            score = re.findall(pattern, score_html.string)[0]
     else:
         score = "0.0"
     print("Movie Score: " + score)

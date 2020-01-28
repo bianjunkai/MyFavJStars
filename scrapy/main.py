@@ -8,7 +8,7 @@ from movie import Movie
 
 
 DB_NAME = 'jav.db'
-JAVBUS_URL = 'https://www.dmmbus.bid'
+JAVBUS_URL = 'https://www.javbus.com'
 JAVLIB_URL = "http://www.n43a.com/en/"
 STAR_LIST = [
     "紺野ひかる",
@@ -21,7 +21,7 @@ STAR_LIST = [
     "橋本ありな",
     "山岸逢花",
     "小倉由菜",
-    "桜空もも"]
+    "桜空もも", "相沢みなみ", "天使もえ", "桃乃木かな"]
 
 
 def create_new_db(db_name, javbus_url, stars):
@@ -109,6 +109,6 @@ def scan_all_data(db_name, javbus_url, javlib_url):
     return
 
 
-# create_new_db(DB_NAME,JAVBUS_URL,STAR_LIST)
+# create_new_db(DB_NAME,JAVBUS_URL,["相沢みなみ","天使もえ","桃乃木かな"])
 scan_newest_data(DB_NAME, JAVBUS_URL, JAVLIB_URL)
 # scrapy.load_javbus_page('https://www.dmmbus.bid',"/star/93l/15",[])
