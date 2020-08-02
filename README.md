@@ -1,4 +1,4 @@
-# MyFavJStarts
+# MyFavJStars
 
 ** A crawler based on python (requests+beautifulsoup). **
 
